@@ -13,6 +13,7 @@ import { Login } from './login.model';
 })
 export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
+  tornadoSession: WebSocket;
   username: string;
   constructor(fb: FormBuilder, private loginService: LoginService) {
     this.loginForm = fb.group({
@@ -22,17 +23,16 @@ export class LoginFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.loginService.getCookie('csrftoken'));
-    this.loginService.getCsrf();
+
   }
 
   onSubmit(value: Login): void {
-    this.loginService.getCsrf();
     this.signIn(value);
   }
 
   signIn(login: Login): void {
-    this.loginService.sessionLogin(login);
+
+    this.loginService.tokenLogin(login);
 
     console.log('username: ', this.loginService.getLogin().username);
     console.log('password: ', this.loginService.getLogin().password);

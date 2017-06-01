@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
+import { UserService } from '../services/user.service';
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
@@ -7,7 +8,7 @@ import { LoginService } from '../services/login.service';
 })
 export class UserInfoComponent implements OnInit {
   username: string;
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: LoginService, private userService: UserService) {
 
   }
 
@@ -15,7 +16,11 @@ export class UserInfoComponent implements OnInit {
   }
 
   getUsername() {
-    console.log(this.loginService.getLogin().username);
+    this.getUserProfile();
+  }
+
+  getUserProfile() {
+    this.userService.getUserProfile(this.loginService.token, this.loginService.login.username);
   }
 
 }

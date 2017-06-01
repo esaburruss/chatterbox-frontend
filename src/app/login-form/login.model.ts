@@ -1,9 +1,6 @@
 export class Login {
-  id: string;
   username: string;
   password: string;
-  //csrfmiddlewaretoken: string;
-  cookie: string;
 
   constructor(username: string, password: string) {
     this.username = username;
