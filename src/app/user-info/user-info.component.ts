@@ -18,7 +18,6 @@ export class UserInfoComponent implements OnInit {
   getUsername() {
     this.getUserProfile();
   }
-
   getUserProfile() {
     this.userService.getUserProfile(this.loginService.token, this.loginService.login.username);
   }

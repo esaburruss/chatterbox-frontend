@@ -23,6 +23,7 @@ import { AlertModule } from 'ngx-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { ChatInputComponent } from './chat-input/chat-input.component';
 
 import { LoginModule } from './login-form/login.module';
 import { UserModule } from './user-info/user.module';
@@ -32,7 +33,8 @@ import { UserModule } from './user-info/user.module';
     AppComponent,
     NavbarComponent,
     LoginFormComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    ChatInputComponent
   ],
   imports: [
     BrowserModule,

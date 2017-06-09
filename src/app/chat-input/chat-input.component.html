@@ -1,0 +1,22 @@
+
+<div class="row">
+  <div class="col-lg-6 chat-window" id="chat">
+    <p *ngFor="let msg of this.userService.messages">
+      {{ msg }}
+    </p>
+  </div>
+</div>
+<form [formGroup]="chatForm"
+      (ngSubmit)="sendMessage(chatForm.value.message)"
+      id="login-form"
+      class="navbar-form">
+
+      <div class="form-group">
+        <input type="text"
+               id="message-input"
+               class="form-control"
+               placeholder="Enter Message"
+               [formControl]="chatForm.controls['message']">
+      </div>
+      <button type="submit" class="btn btn-success">Send Message</button>
+</form>

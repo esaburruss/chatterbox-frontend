@@ -7,6 +7,7 @@ export class UserService {
   user: User;
   token: string;
   tornado: WebSocket;
+  messages: string[];
 
   constructor(private http: Http) {
 
@@ -15,20 +16,27 @@ export class UserService {
 
   getTornadoSession(): WebSocket {
     var ws = new WebSocket("ws://localhost:8888/websocket?Id=" + this.user.id);
-    ws.onopen = function() {
-        ws.send("PING");
-        console.log("Socket Sent");
+    ws.onopen = () => {
+        //ws.send("PING");
+        this.messages = [];
+        console.log("Socket Open");
     };
-    ws.onmessage = function (evt) {
+    ws.onmessage = (evt) => {
         var received_msg = evt.data;
         console.log("Message: ");
         console.log(received_msg);
+        var msg:Msg = JSON.parse(received_msg);
+        this.messages.push('Shelly (' + msg.time + ') -- ' + msg.message);
     };
     ws.onclose = function() {
       console.log("Closed");
     };
 
     return ws;
+  }
+
+  sendMessage(id: number, message: string) {
+    this.tornado.send('{"id": ' + id + ', "message": "' + message + '"}');
   }
 
   getUserProfile(token: string, username: string) {
@@ -52,4 +60,10 @@ export class UserService {
   getUser(): any {
     return this.user;
   }
+}
+
+interface Msg{
+  time:number;
+  id:number;
+  message:string;
 }
