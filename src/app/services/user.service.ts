@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { User } from '../user-info/user.model';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class UserService {
 
 
   getTornadoSession(): WebSocket {
-    var ws = new WebSocket("ws://localhost:8888/websocket?Id=" + this.user.id);
+    var ws = new WebSocket("ws://localhost:8888/websocket?id=" + this.user.id + "&username=" + this.user.username);
     ws.onopen = () => {
         //ws.send("PING");
         this.messages = [];
@@ -36,7 +36,22 @@ export class UserService {
   }
 
   sendMessage(id: number, message: string) {
-    this.tornado.send('{"id": ' + id + ', "message": "' + message + '"}');
+    //this.tornado.send('{"id": ' + id + ', "message": "' + message + '"}');
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    let url = 'http://127.0.0.1:8888/msg';
+    let jsn = '{"from_id": 1, "to_id": ' + id + ', "message": "' + message + '"}';
+    console.log('Trying to POST');
+    console.log(jsn);
+    this.http.post(
+      url,
+      jsn,
+      options
+    )
+    .subscribe((res: Response) => {
+      console.log(res.json());
+    });//.catch(this.handleError);
+
   }
 
   getUserProfile(token: string, username: string) {
