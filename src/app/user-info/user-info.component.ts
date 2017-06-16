@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../services/login.service';
-import { UserService } from '../services/user.service';
+import { DjangoService } from '../services/django.service';
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
@@ -8,7 +7,7 @@ import { UserService } from '../services/user.service';
 })
 export class UserInfoComponent implements OnInit {
   username: string;
-  constructor(private loginService: LoginService, private userService: UserService) {
+  constructor(private djangoService: DjangoService) {
 
   }
 
@@ -19,7 +18,7 @@ export class UserInfoComponent implements OnInit {
     this.getUserProfile();
   }
   getUserProfile() {
-    this.userService.getUserProfile(this.loginService.token, this.loginService.login.username);
+    //this.userService.getUserProfile(this.djangoService.token, this.djangoService.login.username);
   }
 
 }

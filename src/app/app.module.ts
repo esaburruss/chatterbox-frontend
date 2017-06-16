@@ -27,6 +27,8 @@ import { ChatInputComponent } from './chat-input/chat-input.component';
 
 import { LoginModule } from './login-form/login.module';
 import { UserModule } from './user-info/user.module';
+import { OnlineUsersComponent } from './online-users/online-users.component';
+import { OnlineUserComponent } from './online-user/online-user.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { UserModule } from './user-info/user.module';
     NavbarComponent,
     LoginFormComponent,
     UserInfoComponent,
-    ChatInputComponent
+    ChatInputComponent,
+    OnlineUsersComponent,
+    OnlineUserComponent
   ],
   imports: [
     BrowserModule,

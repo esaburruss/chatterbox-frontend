@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DjangoService } from '../services/django.service';
+import { TornadoService } from '../services/tornado.service';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   providers: [
-    DjangoService
+    DjangoService,
+    TornadoService
   ],
   declarations: []
 })
 
-export class UserModule {
+export class OnlineUsersModule {
 
 }

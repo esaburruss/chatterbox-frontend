@@ -3,7 +3,8 @@ import {
   FormBuilder,
   FormGroup
 } from '@angular/forms';
-import { LoginService } from '../services/login.service';
+import { DjangoService } from '../services/django.service';
+import { TornadoService } from '../services/tornado.service';
 import { Login } from './login.model';
 
 @Component({
@@ -13,12 +14,18 @@ import { Login } from './login.model';
 })
 export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
-  tornadoSession: WebSocket;
   username: string;
-  constructor(fb: FormBuilder, private loginService: LoginService) {
+  constructor(fb: FormBuilder, private djangoService: DjangoService, private tornadoService: TornadoService) {
     this.loginForm = fb.group({
       'username': [''],
       'password': ['']
+    });
+    djangoService.loggedIn$.subscribe(
+      loggedIn => {
+        console.log(loggedIn);
+        if(loggedIn) {
+          this.connectTornado();
+        }
     });
   }
 
@@ -31,11 +38,11 @@ export class LoginFormComponent implements OnInit {
   }
 
   signIn(login: Login): void {
+    this.djangoService.tokenLogin(login);
+  }
 
-    this.loginService.tokenLogin(login);
-
-    console.log('username: ', this.loginService.getLogin().username);
-    console.log('password: ', this.loginService.getLogin().password);
+  connectTornado(): void {
+    this.tornadoService.getTornadoSession(this.djangoService.currentUser);
   }
 
 }

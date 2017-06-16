@@ -3,7 +3,6 @@ import {
   FormBuilder,
   FormGroup
 } from '@angular/forms';
-import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -13,7 +12,7 @@ import { UserService } from '../services/user.service';
 export class ChatInputComponent implements OnInit {
   chatForm: FormGroup;
   messages: string[];
-  constructor(fb: FormBuilder, private userService: UserService) {
+  constructor(fb: FormBuilder) {
     this.chatForm = fb.group({
       'message': ['']
     });
@@ -26,7 +25,7 @@ export class ChatInputComponent implements OnInit {
 
   sendMessage(message: string) {
     console.log(message);
-    this.userService.sendMessage(2, message)
+    //this.userService.sendMessage(2, message)
   }
 
   newMessage() {

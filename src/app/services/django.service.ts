@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
-import { TornadoService } from '../services/tornado.service';
 import { Login } from '../models/login.model';
 import { User } from '../models/user.model';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class LoginService {
+export class DjangoService {
   login: Login;
   token: string;
   loggedIn: boolean;
-  currentUser: User
+  currentUser: User;
+  private loggedInSource = new Subject<boolean>();
+
+  loggedIn$ = this.loggedInSource.asObservable();
 
   constructor(private http: Http) {
 
@@ -36,13 +39,13 @@ export class LoginService {
         console.log(res.json());
         console.log(this.login);
         this.token = res.json().token;
-        this.loggedIn = true;
+        //this.loggedIn = true;
         this.getUserProfile();
       });
   }
 
   getUserProfile() {
-    this.http.get(
+      this.http.get(
       'http://127.0.0.1:8000/api/profile/',
       {headers: new Headers({'Authorization': 'Token ' + this.token})}
       )
@@ -50,6 +53,7 @@ export class LoginService {
         console.log(res.json());
         this.currentUser = new User(this.login.username, res.json().pk, res.json().gender, res.json().firstName, res.json().lastName);
         console.log(this.currentUser);
+        this.loggedInSource.next(true);
       });
   }
 
