@@ -51,7 +51,7 @@ export class DjangoService {
       )
       .subscribe((res: Response) => {
         console.log(res.json());
-        this.currentUser = new User(this.login.username, res.json().pk, res.json().gender, res.json().firstName, res.json().lastName);
+        this.currentUser = new User({username: this.login.username, id: res.json().pk, gender: res.json().gender, firstName: res.json().firstName, lastName: res.json().lastName});
         console.log(this.currentUser);
         this.loggedInSource.next(true);
       });

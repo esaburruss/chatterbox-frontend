@@ -7,9 +7,13 @@ import { Subject } from 'rxjs/Subject';
 export class TornadoService {
   currentUser: User;
   tornado: WebSocket;
-  private loggedInUserSource = new Subject<User>();
 
+  private loggedInUserSource = new Subject<User>();
   loggedInUser$ = this.loggedInUserSource.asObservable();
+
+  selectedUser: User;
+  private selectedUserSource = new Subject<User>();
+  selectedUser$ = this.selectedUserSource.asObservable();
 
   constructor(private http: Http) {
 
@@ -27,10 +31,15 @@ export class TornadoService {
         var received_msg = evt.data;
         console.log("Message: ");
         console.log(received_msg);
-        var msg : any = JSON.parse(received_msg);
+        let msg : any = JSON.parse(received_msg);
         if(msg.code == 'signIn') {
           console.log('Code Sign In');
-          this.loggedInUserSource.next(new User(msg.username, msg.userId, null, null, null))
+          this.loggedInUserSource.next(new User({username: msg.username, id: msg.userId}))
+        }
+        if(msg.code == "online-users") {
+          for(let user of msg.users) {
+            this.loggedInUserSource.next(new User({username: user.username, id: user.id}))
+          }
         }
         //this.messages.push('Shelly (' + msg.time + ') -- ' + msg.message);
     };
@@ -41,12 +50,12 @@ export class TornadoService {
     this.tornado = ws;
   }
 
-  sendMessage(id: number, message: string) {
+  sendMessage(message: string) {
     //this.tornado.send('{"id": ' + id + ', "message": "' + message + '"}');
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let url = 'http://127.0.0.1:8888/msg';
-    let jsn = '{"from_id": 1, "to_id": ' + id + ', "message": "' + message + '"}';
+    let jsn = '{"from_id": 1, "to_id": ' + this.selectedUser.id + ', "message": "' + message + '"}';
     console.log('Trying to POST');
     console.log(jsn);
     this.http.post(
@@ -55,9 +64,14 @@ export class TornadoService {
       options
     )
     .subscribe((res: Response) => {
-      console.log(res.json());
+      //console.log(res.json());
     });//.catch(this.handleError);
 
+  }
+
+  changeConversation(user: User) {
+    this.selectedUserSource.next(user);
+    this.selectedUser = user;
   }
 
 }

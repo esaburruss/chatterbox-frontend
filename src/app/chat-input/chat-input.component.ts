@@ -3,6 +3,8 @@ import {
   FormBuilder,
   FormGroup
 } from '@angular/forms';
+import { TornadoService } from '../services/tornado.service';
+import { DjangoService } from '../services/django.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -12,7 +14,7 @@ import {
 export class ChatInputComponent implements OnInit {
   chatForm: FormGroup;
   messages: string[];
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, private djangoService: DjangoService, private tornadoService: TornadoService) {
     this.chatForm = fb.group({
       'message': ['']
     });
@@ -20,11 +22,12 @@ export class ChatInputComponent implements OnInit {
 
   ngOnInit() {
     this.messages = [];
-    this.messages.push("message");
+    //this.messages.push("message");
   }
 
   sendMessage(message: string) {
     console.log(message);
+    this.tornadoService.sendMessage(message);
     //this.userService.sendMessage(2, message)
   }
 
