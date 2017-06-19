@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { User } from '../models/user.model';
+import { Message } from '../models/message.model';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
@@ -10,6 +11,12 @@ export class TornadoService {
 
   private loggedInUserSource = new Subject<User>();
   loggedInUser$ = this.loggedInUserSource.asObservable();
+
+  private newMessageSource = new Subject<Message>();
+  newMessage$ = this.newMessageSource.asObservable();
+
+  private sentMessageSource = new Subject<string>();
+  sentMessage$ = this.sentMessageSource.asObservable();
 
   selectedUser: User;
   private selectedUserSource = new Subject<User>();
@@ -36,10 +43,13 @@ export class TornadoService {
           console.log('Code Sign In');
           this.loggedInUserSource.next(new User({username: msg.username, id: msg.userId}))
         }
-        if(msg.code == "online-users") {
+        if(msg.code == 'online-users') {
           for(let user of msg.users) {
             this.loggedInUserSource.next(new User({username: user.username, id: user.id}))
           }
+        }
+        if(msg.code == 'message') {
+          this.newMessageSource.next(new Message(msg.from, msg.message, msg.time));
         }
         //this.messages.push('Shelly (' + msg.time + ') -- ' + msg.message);
     };
@@ -55,7 +65,7 @@ export class TornadoService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let url = 'http://127.0.0.1:8888/msg';
-    let jsn = '{"from_id": 1, "to_id": ' + this.selectedUser.id + ', "message": "' + message + '"}';
+    let jsn = '{"from_id": ' + this.currentUser.id + ', "to_id": ' + this.selectedUser.id + ', "message": "' + message + '"}';
     console.log('Trying to POST');
     console.log(jsn);
     this.http.post(
@@ -65,6 +75,7 @@ export class TornadoService {
     )
     .subscribe((res: Response) => {
       //console.log(res.json());
+      this.sentMessageSource.next(message)
     });//.catch(this.handleError);
 
   }

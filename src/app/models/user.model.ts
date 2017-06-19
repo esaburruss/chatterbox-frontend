@@ -16,6 +16,10 @@ export class User {
       this.gender = "Male";
     else
       this.gender = "Female";
-    this.conversation = obj.conversation;
+    if(obj.conversation) {
+      this.conversation = obj.conversation;
+    } else {
+      this.conversation = new Conversation();
+    }
   }
 }

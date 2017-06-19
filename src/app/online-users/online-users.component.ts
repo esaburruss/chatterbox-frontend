@@ -6,6 +6,7 @@ import {
   Output
 } from '@angular/core';
 import { User } from '../models/user.model';
+import { Message } from '../models/message.model';
 import { DjangoService } from '../services/django.service';
 import { TornadoService } from '../services/tornado.service';
 
@@ -24,6 +25,24 @@ export class OnlineUsersComponent implements OnInit {
       newUser => {
         console.log(newUser);
         this.onlineUsers.push(newUser);
+    });
+    tornadoService.newMessage$.subscribe(
+      message => {
+        console.log(message);
+        for(let u of this.onlineUsers) {
+          if(u.id == message.from) {
+            u.conversation.messages.push(message);
+          }
+        }
+    });
+    tornadoService.sentMessage$.subscribe(
+      message => {
+        console.log(message);
+        for(let u of this.onlineUsers) {
+          if(u.id == this.tornadoService.selectedUser.id) {
+            u.conversation.messages.push(new Message(this.djangoService.currentUser.id, message, Date.now()));
+          }
+        }
     });
 
   }
