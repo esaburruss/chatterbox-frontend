@@ -1,6 +1,8 @@
 <p>
   A conversation hasn't been started with {{ selectedUser.username }} yet...
 </p>
-<p *ngFor="let message of selectedUser.conversation.messages">
-  {{ message.message }}
-</p>
+<app-chat-message
+  *ngFor="let message of selectedUser.conversation.messages"
+  [message]="message">
+
+</app-chat-message>

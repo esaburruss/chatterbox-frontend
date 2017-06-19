@@ -1,0 +1,6 @@
+<div *ngIf="incoming" class="well from">
+  ({{ message.getTime() }}) - {{ message.message }}
+</div>
+<div *ngIf="!incoming" class="well to">
+  {{ message.message }} - ({{ message.getTime() }}) You
+</div>

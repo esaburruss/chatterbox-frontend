@@ -1,0 +1,11 @@
+.message {
+  border: 1px solid;
+}
+
+.to {
+  text-align: right;
+}
+
+.from {
+  text-align: left;
+}

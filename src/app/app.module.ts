@@ -31,6 +31,7 @@ import { OnlineUsersComponent } from './online-users/online-users.component';
 import { OnlineUserComponent } from './online-user/online-user.component';
 import { ChatWrapperComponent } from './chat-wrapper/chat-wrapper.component';
 import { ChatConversationComponent } from './chat-conversation/chat-conversation.component';
+import { ChatMessageComponent } from './chat-message/chat-message.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ChatConversationComponent } from './chat-conversation/chat-conversation
     OnlineUsersComponent,
     OnlineUserComponent,
     ChatWrapperComponent,
-    ChatConversationComponent
+    ChatConversationComponent,
+    ChatMessageComponent
   ],
   imports: [
     BrowserModule,
