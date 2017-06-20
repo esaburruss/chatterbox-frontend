@@ -44,6 +44,11 @@ export class OnlineUsersComponent implements OnInit {
           }
         }
     });
+    djangoService.chat$.subscribe(
+      user => {
+        //this.onlineUsers.push(newUser);
+        this.tornadoService.changeConversation(user);
+    });
 
   }
 
@@ -53,7 +58,8 @@ export class OnlineUsersComponent implements OnInit {
   clicked(user: User): void {
     this.currentUser = user;
     console.log(user);
-    this.tornadoService.changeConversation(user);
+    this.djangoService.getOldMessages(user);
+    //this.tornadoService.changeConversation(user);
   }
 
   isSelected(user: User): boolean {

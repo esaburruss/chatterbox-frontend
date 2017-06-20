@@ -12,14 +12,19 @@ export class User {
     this.firstName = obj.firstName;
     this.lastName = obj.lastName;
     this.id = obj.id;
-    if(obj.gender == 1)
-      this.gender = "Male";
-    else
-      this.gender = "Female";
+    this.setGender(obj.gender);
     if(obj.conversation) {
       this.conversation = obj.conversation;
     } else {
       this.conversation = new Conversation();
     }
+  }
+  setGender(g: number): void {
+    if(g == 1)
+      this.gender = "Male";
+    else if(g == 0)
+      this.gender = "Female";
+    else
+      this.gender = undefined;
   }
 }

@@ -6,6 +6,7 @@ import {
   Output
 } from '@angular/core';
 import { User } from '../models/user.model';
+import { Message } from '../models/message.model';
 import { TornadoService } from '../services/tornado.service';
 import { DjangoService } from '../services/django.service';
 
@@ -23,6 +24,8 @@ export class ChatConversationComponent implements OnInit {
         console.log('Convo:');
         console.log(user);
         this.selectedUser = user;
+
+        //this.tornadoService.selectedUser=this.selectedUser;
     });
   }
 
